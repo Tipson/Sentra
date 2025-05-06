@@ -1,5 +1,7 @@
 using System.Runtime.InteropServices;
 using Sentra.Application.Embedding;
+using Sentra.Infrastructure.Persistence;
+using Sentra.Application.Search;
 
 namespace Sentra.UI
 {
@@ -15,13 +17,17 @@ namespace Sentra.UI
         private const uint VkSpace = 0x20;
 
         private TextBox _inputBox;
-        private EmbeddingClient _embeddingClient = new EmbeddingClient();
+        private readonly EmbeddingDbContext _dbContext = new();
+        private readonly EmbeddingClient _embeddingClient = new();
+        private readonly ISearchEngine _searchEngine;
 
         public MainForm()
         {
             RegisterHotKey(Handle, HotkeyId, ModControl, VkSpace);
             Visible = false;
-
+            
+            _searchEngine = new VectorSearch(_dbContext, _embeddingClient);
+            
             FormBorderStyle = FormBorderStyle.None;
             StartPosition = FormStartPosition.CenterScreen;
             Size = new Size(400, 60);
@@ -78,11 +84,18 @@ namespace Sentra.UI
         private async void OnSendClick(object sender, EventArgs e)
         {
             string userInput = _inputBox.Text;
-
             try
             {
-                var vector = await _embeddingClient.GetEmbeddingAsync(userInput);
-                MessageBox.Show("Эмбеддинг успешно получен. Длина: " + vector.Length);
+                var results = await _searchEngine.SearchAsync(userInput);
+                if (results.Count == 0)
+                {
+                    MessageBox.Show("Ничего не найдено.");
+                }
+                else
+                {
+                    var msg = string.Join("\n\n", results.Select(r => $"📄 {r.FilePath}\n🔍 {r.Snippet[..Math.Min(200, r.Snippet.Length)]}..."));
+                    MessageBox.Show(msg, "Результаты поиска", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
 
                 Visible = false;
                 WindowState = FormWindowState.Minimized;
@@ -90,9 +103,10 @@ namespace Sentra.UI
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка: " + ex.Message);
+                MessageBox.Show("Ошибка поиска: " + ex.Message);
             }
         }
+
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
