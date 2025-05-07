@@ -9,6 +9,7 @@ public class FileRecord
     public string Content { get; set; } = string.Empty;
     public string VectorJson { get; set; } = string.Empty;
     public DateTime IndexedAt { get; set; } = DateTime.UtcNow;
+    public DateTime LastModified { get; set; }
 
     public float[] GetVector() =>
         System.Text.Json.JsonSerializer.Deserialize<float[]>(VectorJson) ?? Array.Empty<float>();

@@ -12,11 +12,13 @@
 
   <Border Background="#2D2D2D" CornerRadius="12" Padding="12">
     <StackPanel Spacing="10">
-      <TextBlock Text="🔍 Sentra Search"
-                 HorizontalAlignment="Center"
-                 Foreground="LightGray"
-                 FontSize="16"
-                 FontWeight="Bold"/>
+      <TextBlock x:Name="IndexingStatus"
+           FontSize="13"
+           Foreground="LightGray"
+           HorizontalAlignment="Center"
+           FontStyle="Italic"
+           Visibility="Collapsed"
+           Margin="0,0,0,4"/>
 
       <TextBox x:Name="SearchBox"
                FontSize="18"

@@ -28,43 +28,58 @@ public partial class SearchWindow : Window
         Deactivated += (_, _) => Hide();
 
         SearchBox.KeyDown += OnKeyDown;
+        
+        DispatcherTimer.Run(TimeSpan.FromMilliseconds(300), () =>
+        {
+            if (App.IndexingProgress > 0 && App.IndexingProgress < 1)
+            {
+                IndexingStatus.IsVisible = true;
+                IndexingStatus.Text = $"🟡 Индексация: {(App.IndexingProgress * 100):0}%";
+            }
+            else
+            {
+                IndexingStatus.IsVisible = false;
+            }
+
+            return true;
+        });
     }
 
     private async void OnKeyDown(object? sender, KeyEventArgs e)
-{
-    if (e.Key == Key.Enter)
     {
-        var query = SearchBox.Text?.Trim();
-        if (string.IsNullOrWhiteSpace(query)) return;
-
-        var results = await _searchEngine.SearchAsync(query);
-
-        _dbContext.SearchHistory.Add(new SearchHistory
+        if (e.Key == Key.Enter)
         {
-            Query = query,
-            FilePath = "",
-            WasOpened = false,
-            Timestamp = DateTime.UtcNow
-        });
-        await _dbContext.SaveChangesAsync();
+            var query = SearchBox.Text?.Trim();
+            if (string.IsNullOrWhiteSpace(query)) return;
 
-        if (results.Count == 0)
-        {
-            ResultsBox.ItemsSource = new[] { "Ничего не найдено." };
+          var results = await _searchEngine.SearchAsync(query);
+
+            _dbContext.SearchHistory.Add(new SearchHistory
+            {
+                Query = query,
+                FilePath = "",
+                WasOpened = false,
+                Timestamp = DateTime.UtcNow
+            });
+            await _dbContext.SaveChangesAsync();
+
+            if (results.Count == 0)
+            {
+                ResultsBox.ItemsSource = new[] { "Ничего не найдено." };
+            }
+            else
+            {
+                ResultsBox.ItemsSource = results.Select(r =>
+                   $"📄 {r.FilePath}\n{r.Snippet[..Math.Min(200, r.Snippet.Length)]}...");
+              ResultsBox.PointerReleased += OnResultClick;
+            }
         }
-        else
-        {
-            ResultsBox.ItemsSource = results.Select(r =>
-                $"📄 {r.FilePath}\n{r.Snippet[..Math.Min(200, r.Snippet.Length)]}...");
-            ResultsBox.PointerReleased += OnResultClick;
-        }
+        else if (e.Key == Key.Escape)
+       {
+            Hide();
+            SearchBox.Text = string.Empty;
+      }
     }
-    else if (e.Key == Key.Escape)
-    {
-        Hide();
-        SearchBox.Text = string.Empty;
-    }
-}
 
 private void OnResultClick(object? sender, PointerReleasedEventArgs e)
 {
