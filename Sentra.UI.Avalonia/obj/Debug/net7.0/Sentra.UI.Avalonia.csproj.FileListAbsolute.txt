@@ -1,0 +1,10 @@
+C:\Users\Tipso\RiderProjects\Sentra\Sentra.UI.Avalonia\obj\Debug\net7.0\Sentra.UI.Avalonia.csproj.AssemblyReference.cache
+C:\Users\Tipso\RiderProjects\Sentra\Sentra.UI.Avalonia\obj\Debug\net7.0\Avalonia\Resources.Inputs.cache
+C:\Users\Tipso\RiderProjects\Sentra\Sentra.UI.Avalonia\obj\Debug\net7.0\Avalonia\resources
+C:\Users\Tipso\RiderProjects\Sentra\Sentra.UI.Avalonia\obj\Debug\net7.0\Sentra.UI.Avalonia.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Tipso\RiderProjects\Sentra\Sentra.UI.Avalonia\obj\Debug\net7.0\Sentra.UI.Avalonia.AssemblyInfoInputs.cache
+C:\Users\Tipso\RiderProjects\Sentra\Sentra.UI.Avalonia\obj\Debug\net7.0\Sentra.UI.Avalonia.AssemblyInfo.cs
+C:\Users\Tipso\RiderProjects\Sentra\Sentra.UI.Avalonia\obj\Debug\net7.0\Sentra.UI.Avalonia.csproj.CoreCompileInputs.cache
+C:\Users\Tipso\RiderProjects\Sentra\Sentra.UI.Avalonia\obj\Debug\net7.0\Sentra.UI.Avalonia.dll
+C:\Users\Tipso\RiderProjects\Sentra\Sentra.UI.Avalonia\obj\Debug\net7.0\refint\Sentra.UI.Avalonia.dll
+C:\Users\Tipso\RiderProjects\Sentra\Sentra.UI.Avalonia\obj\Debug\net7.0\Sentra.UI.Avalonia.pdb

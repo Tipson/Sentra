@@ -34,7 +34,8 @@ public class VectorSearch : ISearchEngine
             results.Add(new SearchResult
             {
                 FilePath = file.Path,
-                Score = score
+                Score = score,
+                Snippet = file.Content.Length > 300 ? file.Content[..300] + "..." : file.Content
             });
         }
 

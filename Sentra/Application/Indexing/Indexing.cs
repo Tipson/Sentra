@@ -10,7 +10,7 @@ namespace Sentra.Application.Indexing;
 
 public class Indexer : IIndexer
 {
-    private readonly UniversalTextExtractor _extractor = new();
+    private readonly RawTextExtractor _extractor = new();
     private readonly EmbeddingClient _embeddingClient;
     private readonly EmbeddingDbContext _dbContext;
     private readonly ILogger<Indexer>? _logger;
@@ -39,7 +39,7 @@ public class Indexer : IIndexer
                     // Проверка, не проиндексирован ли уже
                     if (await _dbContext.Files.AnyAsync(f => f.Path == file)) continue;
 
-                    var text = _extractor.ExtractText(file);
+                    var text = _extractor.TryExtract(file);
                     if (string.IsNullOrWhiteSpace(text)) continue;
 
                     var vector = await _embeddingClient.GetEmbeddingAsync(text);

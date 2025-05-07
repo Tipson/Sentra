@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentra", "Sentra\Sentra.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentra.Tests", "Sentra.Tests\Sentra.Tests.csproj", "{434B6B58-9091-4108-BF4C-3AB409FD3368}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sentra.UI.Avalonia", "Sentra.UI.Avalonia\Sentra.UI.Avalonia.csproj", "{E1C07BF3-38D7-40E4-9C94-30A6A6F65AA5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{434B6B58-9091-4108-BF4C-3AB409FD3368}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{434B6B58-9091-4108-BF4C-3AB409FD3368}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{434B6B58-9091-4108-BF4C-3AB409FD3368}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1C07BF3-38D7-40E4-9C94-30A6A6F65AA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1C07BF3-38D7-40E4-9C94-30A6A6F65AA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1C07BF3-38D7-40E4-9C94-30A6A6F65AA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1C07BF3-38D7-40E4-9C94-30A6A6F65AA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

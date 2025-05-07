@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="sentra_index.db" uuid="8d50f815-1d7a-4332-a23f-fc01906dfcea">
+    <data-source source="LOCAL" name="sentra_index.db" uuid="22c1183e-9e88-4a42-942b-e4b1febe9275">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/Sentra/bin/Debug/net7.0-windows/sentra_index.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/Sentra/sentra_index.db</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
       </jdbc-additional-properties>

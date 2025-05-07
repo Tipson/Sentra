@@ -42,6 +42,28 @@ namespace Sentra.Migrations
 
                     b.ToTable("Files");
                 });
+
+            modelBuilder.Entity("Sentra.Domain.SearchHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Query")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("History");
+                });
 #pragma warning restore 612, 618
         }
     }

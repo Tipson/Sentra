@@ -9,6 +9,7 @@ namespace Sentra.Infrastructure.Persistence;
 public class EmbeddingDbContext : DbContext
 {
     public DbSet<FileRecord> Files => Set<FileRecord>();
+    public DbSet<SearchHistory> History { get; set; } = null!;
 
     private readonly string _dbPath;
 

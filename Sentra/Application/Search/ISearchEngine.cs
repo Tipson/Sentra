@@ -1,6 +1,4 @@
-﻿using System.DirectoryServices;
-
-namespace Sentra.Application.Search;
+﻿namespace Sentra.Application.Search;
 
 public interface ISearchEngine
 {

@@ -1,5 +1,4 @@
-﻿using Xunit;
-using Sentra.Application.Indexing;
+﻿using Sentra.Application.Indexing;
 using Sentra.Application.Embedding;
 using Sentra.Infrastructure.Persistence;
 using Microsoft.Extensions.Logging.Abstractions;
