@@ -1,0 +1,40 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Sentra.UI.Avalonia.Views.SearchWindow"
+        Width="600"
+        Height="400"
+        WindowStartupLocation="CenterScreen"
+        CanResize="False"
+        SystemDecorations="None"
+        TransparencyLevelHint="AcrylicBlur"
+        Background="#1E1E1E"
+        Topmost="True">
+
+  <Border Background="#2D2D2D" CornerRadius="12" Padding="12">
+    <StackPanel Spacing="10">
+      <TextBlock Text="🔍 Sentra Search"
+                 HorizontalAlignment="Center"
+                 Foreground="LightGray"
+                 FontSize="16"
+                 FontWeight="Bold"/>
+
+      <TextBox x:Name="SearchBox"
+               FontSize="18"
+               Background="#3A3A3A"
+               Foreground="White"
+               BorderBrush="Gray"
+               CaretBrush="White"
+               BorderThickness="1"
+               CornerRadius="8"
+               Padding="10"
+               Watermark="Поиск файлов..." />
+
+      <ListBox x:Name="ResultsBox"
+               Background="#2A2A2A"
+               Foreground="White"
+               BorderThickness="0"
+               Height="280"
+               SelectionMode="Single"/>
+    </StackPanel>
+  </Border>
+</Window>
