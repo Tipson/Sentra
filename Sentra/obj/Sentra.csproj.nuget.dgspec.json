@@ -1,31 +1,30 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Tipso\\RiderProjects\\Sentra\\Sentra\\Sentra.csproj": {}
+    "/Users/dartum/RiderProjects/Sentra/Sentra/Sentra.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Tipso\\RiderProjects\\Sentra\\Sentra\\Sentra.csproj": {
+    "/Users/dartum/RiderProjects/Sentra/Sentra/Sentra.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Tipso\\RiderProjects\\Sentra\\Sentra\\Sentra.csproj",
+        "projectUniqueName": "/Users/dartum/RiderProjects/Sentra/Sentra/Sentra.csproj",
         "projectName": "Sentra",
-        "projectPath": "C:\\Users\\Tipso\\RiderProjects\\Sentra\\Sentra\\Sentra.csproj",
-        "packagesPath": "C:\\Users\\Tipso\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Tipso\\RiderProjects\\Sentra\\Sentra\\obj\\",
+        "projectPath": "/Users/dartum/RiderProjects/Sentra/Sentra/Sentra.csproj",
+        "packagesPath": "/Users/dartum/.nuget/packages/",
+        "outputPath": "/Users/dartum/RiderProjects/Sentra/Sentra/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Tipso\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/Users/dartum/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net7.0-windows"
+          "net7.0"
         ],
         "sources": {
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net7.0-windows7.0": {
-            "targetAlias": "net7.0-windows",
+          "net7.0": {
+            "targetAlias": "net7.0",
             "projectReferences": {}
           }
         },
@@ -36,8 +35,8 @@
         }
       },
       "frameworks": {
-        "net7.0-windows7.0": {
-          "targetAlias": "net7.0-windows",
+        "net7.0": {
+          "targetAlias": "net7.0",
           "dependencies": {
             "DocumentFormat.OpenXml": {
               "target": "Package",
@@ -94,12 +93,9 @@
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
-            },
-            "Microsoft.WindowsDesktop.App.WindowsForms": {
-              "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.317\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.410/RuntimeIdentifierGraph.json"
         }
       }
     }
