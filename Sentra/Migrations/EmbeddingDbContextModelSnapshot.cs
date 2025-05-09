@@ -15,7 +15,34 @@ namespace Sentra.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.20");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.15");
+
+            modelBuilder.Entity("Sentra.Domain.FileChunk", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ChunkIndex")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("EmbeddingJson")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("FileRecordId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FileRecordId");
+
+                    b.ToTable("Chunks");
+                });
 
             modelBuilder.Entity("Sentra.Domain.FileRecord", b =>
                 {
@@ -23,11 +50,17 @@ namespace Sentra.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Category")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("IndexedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("LastModified")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Path")
@@ -60,9 +93,23 @@ namespace Sentra.Migrations
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("WasOpened")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
-                    b.ToTable("History");
+                    b.ToTable("SearchHistory");
+                });
+
+            modelBuilder.Entity("Sentra.Domain.FileChunk", b =>
+                {
+                    b.HasOne("Sentra.Domain.FileRecord", "FileRecord")
+                        .WithMany()
+                        .HasForeignKey("FileRecordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FileRecord");
                 });
 #pragma warning restore 612, 618
         }

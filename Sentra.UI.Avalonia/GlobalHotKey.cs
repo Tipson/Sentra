@@ -31,7 +31,7 @@ public static class GlobalHotkey
     {
         const int WM_KEYDOWN = 0x0100;
 
-        if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN)
+        if (nCode >= 0 && wParam == WM_KEYDOWN)
         {
             int vkCode = Marshal.ReadInt32(lParam);
 

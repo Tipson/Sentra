@@ -6,10 +6,13 @@ using Sentra.Domain;
 
 namespace Sentra.Infrastructure.Persistence;
 
-public class EmbeddingDbContext : DbContext
+public sealed class EmbeddingDbContext : DbContext
 {
     public DbSet<FileRecord> Files => Set<FileRecord>();
-    public DbSet<SearchHistory> History { get; set; } = null!;
+    public DbSet<SearchHistory> SearchHistory { get; set; } = null!;
+    public FileCategory Category { get; set; } = FileCategory.Other;
+    public DbSet<FileChunk>  Chunks { get; set; } = null!;
+
 
     private readonly string _dbPath;
 

@@ -33,7 +33,7 @@ public class EmbeddingClient
     {
         try
         {
-            var request = new { text = text };
+            var request = new { text };
             var content = new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(_endpoint, content);
 

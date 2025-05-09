@@ -21,3 +21,6 @@ build_property.EnableGeneratedComInterfaceComImportInterop =
 
 [C:/Users/Tipso/RiderProjects/Sentra/Sentra.UI.Avalonia/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[C:/Users/Tipso/RiderProjects/Sentra/Sentra.UI.Avalonia/Views/SearchWindow.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

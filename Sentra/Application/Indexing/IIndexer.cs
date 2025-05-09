@@ -2,5 +2,5 @@
 
 public interface IIndexer
 {
-    Task<List<IndexingResult>> RunAsync();
+    Task<List<IndexingResult>> RunAsync(IProgress<double>? progress);
 }

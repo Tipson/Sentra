@@ -6,7 +6,7 @@ public static partial class FileCrawler
 {
     // Список допустимых расширений для индексации
     private static readonly string[] AllowedExtensions = {
-        ".txt", ".md", ".docx", ".pdf", ".xlsx"
+        ".txt", ".md", ".docx", ".pdf", ".xlsx", ".webp"
     };
 
     /// <summary>

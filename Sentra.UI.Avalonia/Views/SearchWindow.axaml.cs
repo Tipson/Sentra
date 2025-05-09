@@ -1,14 +1,13 @@
-using Avalonia.Controls;
+using System;
+using System.Diagnostics;
+using System.IO;
 using Avalonia.Input;
-using Avalonia.Interactivity;
+using Avalonia.Controls;
 using Avalonia.Threading;
-using Sentra.Application.Embedding;
 using Sentra.Application.Search;
+using Sentra.Application.Embedding;
 using Sentra.Infrastructure.Persistence;
 using Sentra.Domain;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Sentra.UI.Avalonia.Views;
 
@@ -16,110 +15,106 @@ public partial class SearchWindow : Window
 {
     private readonly ISearchEngine _searchEngine;
     private readonly EmbeddingDbContext _dbContext;
+    private int? _currentSearchId;
 
     public SearchWindow()
     {
         InitializeComponent();
 
-        _dbContext = new EmbeddingDbContext();
-        var embedding = new EmbeddingClient();
-        _searchEngine = new VectorSearch(_dbContext, embedding);
+        // Инициализируем контекст и движок поиска
+        _dbContext     = new EmbeddingDbContext();
+        var embedding  = new EmbeddingClient();
+        _searchEngine  = new SearchEngine(_dbContext, embedding);
 
+        // Скрываем окно при потере фокуса
         Deactivated += (_, _) => Hide();
-
-        SearchBox.KeyDown += OnKeyDown;
         
-        DispatcherTimer.Run(TimeSpan.FromMilliseconds(300), () =>
+        InitializeIndexingStatusTimer();
+    }
+
+    // 1) Поиск по Enter: логируем запрос и показываем результаты
+    private async void SearchBox_KeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key != Key.Enter) return;
+
+        var query = SearchBox.Text?.Trim();
+        if (string.IsNullOrWhiteSpace(query)) return;
+
+        // Логируем сам факт поиска
+        var entry = new SearchHistory
         {
-            if (App.IndexingProgress > 0 && App.IndexingProgress < 1)
+            Query     = query,
+            FilePath  = "",
+            WasOpened = false,
+            Timestamp = DateTime.UtcNow
+        };
+        _dbContext.SearchHistory.Add(entry);
+        await _dbContext.SaveChangesAsync();
+        _currentSearchId = entry.Id;
+
+        // Выполняем поиск и отображаем объекты SearchResult
+        var results = await _searchEngine.SearchAsync(query);
+        ResultsBox.ItemsSource = results;
+    }
+
+    // 2) Клик по результату: открываем файл и обновляем запись истории
+    private async void OnResultClick(object? sender, PointerReleasedEventArgs e)
+    {
+        if (sender is not StackPanel panel ||
+            panel.DataContext is not SearchResult result ||
+            _currentSearchId == null)
+            return;
+
+        var path = result.FilePath;
+        // Открываем файл в ассоциированном приложении
+        if (File.Exists(path))
+            Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
+        else
+            Console.WriteLine($"Файл не найден: {path}");
+
+        // Обновляем запись истории: теперь указана папка и WasOpened = true
+        try
+        {
+            var history = await _dbContext.SearchHistory.FindAsync(_currentSearchId.Value);
+            if (history != null)
+            {
+                history.FilePath  = path;
+                history.WasOpened = true;
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка обновления истории: {ex.Message}");
+        }
+
+        Hide();
+        e.Handled = true;
+    }
+    
+    private void InitializeIndexingStatusTimer()
+    {
+        var timer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromMilliseconds(200)
+        };
+        timer.Tick += (_, _) =>
+        {
+            var p = App.IndexingProgress; // от 0.0 до 1.0
+            if (p > 0 && p < 1)
             {
                 IndexingStatus.IsVisible = true;
-                IndexingStatus.Text = $"🟡 Индексация: {(App.IndexingProgress * 100):0}%";
+                IndexingStatus.Text      = $"🟡 Индексация: {(p * 100):0}%";
             }
             else
             {
                 IndexingStatus.IsVisible = false;
             }
-
-            return true;
-        });
+        };
+        timer.Start();
     }
 
-    private async void OnKeyDown(object? sender, KeyEventArgs e)
-    {
-        if (e.Key == Key.Enter)
-        {
-            var query = SearchBox.Text?.Trim();
-            if (string.IsNullOrWhiteSpace(query)) return;
-
-          var results = await _searchEngine.SearchAsync(query);
-
-            _dbContext.SearchHistory.Add(new SearchHistory
-            {
-                Query = query,
-                FilePath = "",
-                WasOpened = false,
-                Timestamp = DateTime.UtcNow
-            });
-            await _dbContext.SaveChangesAsync();
-
-            if (results.Count == 0)
-            {
-                ResultsBox.ItemsSource = new[] { "Ничего не найдено." };
-            }
-            else
-            {
-                ResultsBox.ItemsSource = results.Select(r =>
-                   $"📄 {r.FilePath}\n{r.Snippet[..Math.Min(200, r.Snippet.Length)]}...");
-              ResultsBox.PointerReleased += OnResultClick;
-            }
-        }
-        else if (e.Key == Key.Escape)
-       {
-            Hide();
-            SearchBox.Text = string.Empty;
-      }
-    }
-
-private void OnResultClick(object? sender, PointerReleasedEventArgs e)
-{
-    if (ResultsBox.SelectedItem is string selectedText &&
-        selectedText.StartsWith("📄 "))
-    {
-        var path = selectedText.Split('\n').FirstOrDefault()?.Replace("📄 ", "").Trim();
-        if (File.Exists(path))
-        {
-            try
-            {
-                // открыть файл
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                {
-                    FileName = path,
-                    UseShellExecute = true
-                });
-
-                // логгировать как открытие
-                _dbContext.SearchHistory.Add(new SearchHistory
-                {
-                    Query = SearchBox.Text ?? "",
-                    FilePath = path,
-                    WasOpened = true,
-                    Timestamp = DateTime.UtcNow
-                });
-                _dbContext.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Не удалось открыть файл: " + ex.Message);
-            }
-
-            Hide();
-            SearchBox.Text = string.Empty;
-        }
-    }
-}
-
-
+    // Вспомогательный метод для показа окна по хоткею
     public void ShowCentered()
     {
         WindowStartupLocation = WindowStartupLocation.CenterScreen;

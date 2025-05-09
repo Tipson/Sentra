@@ -1,5 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:search="clr-namespace:Sentra.Application.Search;assembly=Sentra"
+
         x:Class="Sentra.UI.Avalonia.Views.SearchWindow"
         Width="600"
         Height="400"
@@ -12,31 +14,45 @@
 
   <Border Background="#2D2D2D" CornerRadius="12" Padding="12">
     <StackPanel Spacing="10">
-      <TextBlock x:Name="IndexingStatus"
-           FontSize="13"
-           Foreground="LightGray"
-           HorizontalAlignment="Center"
-           FontStyle="Italic"
-           Visibility="Collapsed"
-           Margin="0,0,0,4"/>
+        <TextBlock x:Name="IndexingStatus"
+                   FontSize="13"
+                   Foreground="LightGray"
+                   HorizontalAlignment="Center"
+                   FontStyle="Italic"
+                   IsVisible="False"
+                   Text="🟡 Индексация: 0%"
+                   Margin="0,0,0,4"/>
 
       <TextBox x:Name="SearchBox"
                FontSize="18"
-               Background="#3A3A3A"
-               Foreground="White"
-               BorderBrush="Gray"
-               CaretBrush="White"
-               BorderThickness="1"
-               CornerRadius="8"
-               Padding="10"
-               Watermark="Поиск файлов..." />
-
-      <ListBox x:Name="ResultsBox"
-               Background="#2A2A2A"
+               Background="#2D2D2D"
                Foreground="White"
                BorderThickness="0"
-               Height="280"
-               SelectionMode="Single"/>
+               CornerRadius="8"
+               Padding="12"
+               Watermark="Поиск файлов..."
+               KeyDown="SearchBox_KeyDown"/>
+
+      <ListBox x:Name="ResultsBox"
+               Height="300"
+               Background="#FF2D2D2D"
+               Foreground="White"
+               BorderThickness="0"
+               CornerRadius="8"
+               Padding="8">
+          <ListBox.ItemTemplate>
+              <DataTemplate DataType="search:SearchResult">
+                  <StackPanel Margin="4"
+                              Cursor="Hand"
+                              PointerReleased="OnResultClick">
+                      <!-- показываем имя файла и score -->
+                      <TextBlock Text="{Binding FilePath}" FontWeight="Bold" />
+                      <TextBlock Text="{Binding Score, StringFormat=F2}" />
+                      <TextBlock Text="{Binding Snippet}" MaxLines="2" TextWrapping="Wrap" />
+                  </StackPanel>
+              </DataTemplate>
+          </ListBox.ItemTemplate>
+      </ListBox>
     </StackPanel>
   </Border>
 </Window>

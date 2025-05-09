@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Sentra.UI.Avalonia")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+82b563e3eea8514b08c920a96a7256d6d6e0c129")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1a172973ae0b62abb2016a54fc58e65d75d31165")]
 [assembly: System.Reflection.AssemblyProductAttribute("Sentra.UI.Avalonia")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Sentra.UI.Avalonia")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

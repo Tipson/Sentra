@@ -6,10 +6,11 @@ public class FileRecord
 {
     public int Id { get; set; }
     public string Path { get; set; } = string.Empty;
-    public string Content { get; set; } = string.Empty;
     public string VectorJson { get; set; } = string.Empty;
     public DateTime IndexedAt { get; set; } = DateTime.UtcNow;
     public DateTime LastModified { get; set; }
+    
+    public FileCategory Category { get; set; } = FileCategory.Other;
 
     public float[] GetVector() =>
         System.Text.Json.JsonSerializer.Deserialize<float[]>(VectorJson) ?? Array.Empty<float>();
