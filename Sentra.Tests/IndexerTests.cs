@@ -13,7 +13,8 @@ public class IndexerTests
         // Arrange
         var db = new EmbeddingDbContext();
         var embeddingClient = new EmbeddingClient(); // работает с AppConfig
-        var indexer = new Indexer(db, embeddingClient, NullLogger<Indexer>.Instance);
+        var vectorIndex = new HnswVectorIndex();
+        var indexer = new Indexer(db, embeddingClient, vectorIndex, NullLogger<Indexer>.Instance);
 
         // Act
         var results = await indexer.RunAsync();

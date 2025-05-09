@@ -43,9 +43,25 @@
               "target": "Package",
               "version": "[3.3.0, )"
             },
+            "HNSWIndex": {
+              "target": "Package",
+              "version": "[1.1.5, )"
+            },
             "HtmlAgilityPack": {
               "target": "Package",
               "version": "[1.12.1, )"
+            },
+            "LemmaSharp-std": {
+              "target": "Package",
+              "version": "[1.0.1, )"
+            },
+            "LemmaSharpPreBuilt-std": {
+              "target": "Package",
+              "version": "[1.0.1, )"
+            },
+            "Lucene.Net": {
+              "target": "Package",
+              "version": "[4.8.0-beta00017, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",

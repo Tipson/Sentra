@@ -1,12 +1,14 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using Microsoft.EntityFrameworkCore;
 using Sentra.Application.Embedding;
 using Sentra.Application.Indexing;
-using Sentra.Infrastructure.Persistence;
 using Sentra.UI.Avalonia.Views;
+using Sentra.Infrastructure.Persistence;
 using SharpHook;
 using SharpHook.Native;
 
@@ -30,27 +32,43 @@ public partial class App : global::Avalonia.Application
         {
             Console.WriteLine("== Sentra запущена ==");
 
-            _searchWindow = new SearchWindow();
+            // Создаём общие объекты
+            var db           = new EmbeddingDbContext();
+            var embed        = new EmbeddingClient();
+            var vectorIndex  = new HnswVectorIndex();
 
-            // ✅ Стартуем индексацию асинхронно
-            _ = Task.Run(async () =>
+            // 0) Восстанавливаем векторный индекс из БД (при необходимости)
+            Task.Run(async () =>
             {
-                var db = new EmbeddingDbContext();
-                var embed = new EmbeddingClient();
-                var indexer = new Indexer(db, embed);
+                var existing = await db.Chunks
+                    .AsNoTracking()
+                    .Select(c => new { c.Id, c.EmbeddingJson })
+                    .ToListAsync();
+                foreach (var c in existing)
+                {
+                    var vec = System.Text.Json.JsonSerializer.Deserialize<float[]>(c.EmbeddingJson);
+                    if (vec?.Length > 0)
+                        vectorIndex.AddItem(c.Id, vec);
+                }
+                Console.WriteLine($"🔄 Восстановлено {existing.Count} векторов из БД");
 
+                // 1) Запускаем индексацию (добавит только новые чанки)
+                var indexer = new Indexer(db, embed, vectorIndex);
                 Console.WriteLine("🚀 Начинаем индексацию...");
-
                 await indexer.RunAsync(new Progress<double>(p =>
                 {
-                    App.IndexingProgress = p;
+                    IndexingProgress = p;
                     Console.WriteLine($"📊 Индексация: {(p * 100):0.0}%");
                 }));
 
-                App.IndexingProgress = 1; // ⬅️ чтобы скрыть индикатор после завершения
+                IndexingProgress = 1;
                 Console.WriteLine("✅ Индексация завершена");
             });
 
+            // 2) Создаём окно поиска с теми же зависимостями
+            _searchWindow = new SearchWindow(db, embed, vectorIndex);
+
+            // 3) Настраиваем глобальный хоткей
             _hook = new TaskPoolGlobalHook();
             _hook.KeyPressed += OnGlobalHotkey;
             _hook.RunAsync();
@@ -73,12 +91,11 @@ public partial class App : global::Avalonia.Application
             (e.RawEvent.Mask & ModifierMask.Ctrl) != 0)
         {
             Console.WriteLine("🎯 Ctrl + Space сработал");
-
             Dispatcher.UIThread.Post(() =>
             {
                 if (_searchWindow is { IsVisible: false })
                 {
-                    _searchWindow.Show();
+                    _searchWindow.ShowCentered();
                 }
             });
         }

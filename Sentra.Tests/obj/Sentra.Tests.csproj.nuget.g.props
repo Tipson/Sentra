@@ -22,5 +22,6 @@
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <Pkgxunit_analyzers Condition=" '$(Pkgxunit_analyzers)' == '' ">C:\Users\Tipso\.nuget\packages\xunit.analyzers\1.18.0</Pkgxunit_analyzers>
+    <PkgLucene_Net Condition=" '$(PkgLucene_Net)' == '' ">C:\Users\Tipso\.nuget\packages\lucene.net\4.8.0-beta00017</PkgLucene_Net>
   </PropertyGroup>
 </Project>

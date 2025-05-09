@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Threading;
 using Sentra.Application.Search;
 using Sentra.Application.Embedding;
+using Sentra.Application.Indexing;
 using Sentra.Infrastructure.Persistence;
 using Sentra.Domain;
 
@@ -17,18 +18,17 @@ public partial class SearchWindow : Window
     private readonly EmbeddingDbContext _dbContext;
     private int? _currentSearchId;
 
-    public SearchWindow()
+    public SearchWindow(
+        EmbeddingDbContext dbContext,
+        EmbeddingClient embeddingClient,
+        IVectorIndex vectorIndex)
     {
         InitializeComponent();
 
-        // Инициализируем контекст и движок поиска
-        _dbContext     = new EmbeddingDbContext();
-        var embedding  = new EmbeddingClient();
-        _searchEngine  = new SearchEngine(_dbContext, embedding);
+        _dbContext    = dbContext;
+        _searchEngine = new SearchEngine(dbContext, embeddingClient, vectorIndex);
 
-        // Скрываем окно при потере фокуса
         Deactivated += (_, _) => Hide();
-        
         InitializeIndexingStatusTimer();
     }
 
